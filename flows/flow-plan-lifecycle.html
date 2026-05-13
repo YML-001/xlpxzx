@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>培训计划管理流程</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#3087CC;--blue-light:#E8F2FA;--blue-dark:#1A5F9E;--green:#1BB975;--green-light:#E8FCF4;--orange:#F29100;--orange-light:#FFF5E5;--red:#DF2027;--red-light:#FCE8EA;--gray:#9096A2;--gray-light:#F1F2F3;--text:#1D2129;--text-sub:#4E5969;--bg:#F7F8FA;--white:#fff;--line:#3087CC;--line-w:2px}
+body{font-family:'OPPOSans','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);padding:40px 20px}
+.page{max-width:1100px;margin:0 auto}
+.page-header{text-align:center;margin-bottom:28px}
+.page-header h1{font-size:24px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.page-header p{font-size:14px;color:var(--text-sub)}
+.swimlane{border:1px solid #d0d5dd;border-radius:12px;overflow:hidden;background:var(--white)}
+.swim-header{display:flex;background:linear-gradient(135deg,#3087CC,#1A5F9E)}
+.swim-header .hd{flex:1;text-align:center;padding:14px 8px;color:#fff;font-size:14px;font-weight:600;border-right:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;gap:6px}
+.swim-header .hd:last-child{border-right:none}
+.swim-header .hd i{font-size:13px;opacity:.85}
+.sr{display:flex;position:relative}
+.sr .c{flex:1;display:flex;justify-content:center;align-items:center;padding:14px 8px;min-height:68px;border-right:1px dashed #e5e7eb;position:relative}
+.sr .c:last-child{border-right:none}
+.sr.step-row:nth-child(4n+3){background:rgba(48,135,204,.015)}
+.nd{background:var(--white);border:2px solid var(--blue);border-radius:8px;padding:10px 14px;text-align:center;font-size:13px;font-weight:600;min-width:120px;max-width:210px;box-shadow:0 1px 6px rgba(0,0,0,.06);position:relative;z-index:2}
+.nd .dt{font-size:11px;font-weight:400;color:var(--text-sub);margin-top:3px;line-height:1.45}
+.nd.start{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;border:none;border-radius:20px;padding:8px 28px;min-width:auto}
+.nd.end{background:var(--gray-light);color:var(--gray);border:2px dashed var(--gray);border-radius:20px;padding:8px 28px;min-width:auto}
+.nd.sys{border-color:var(--green)}
+.nd.usr{border-color:var(--orange)}
+.nd.decision{border-color:var(--orange);background:var(--orange-light)}
+.nd .num{position:absolute;top:-9px;left:-9px;width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:3}
+.nd.sys .num{background:var(--green)}
+.nd.usr .num{background:var(--orange)}
+.sr.conn .c{min-height:36px;padding:0}
+.pv-t::before{content:'';position:absolute;left:50%;top:0;height:50%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.pv-b::before{content:'';position:absolute;left:50%;top:50%;height:50%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.pv-f::before{content:'';position:absolute;left:50%;top:0;height:100%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.ph-l::after{content:'';position:absolute;top:50%;left:0;width:50%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.ph-r::after{content:'';position:absolute;top:50%;left:50%;width:50%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.ph-f::after{content:'';position:absolute;top:50%;left:0;width:100%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.arrow-down{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--line);z-index:2}
+.branch-yes{--line:var(--green)}.branch-yes .nd{border-color:var(--green)}.branch-yes .nd .num{background:var(--green)}
+.branch-no{--line:var(--red)}.branch-no .nd{border-color:var(--red)}.branch-no .nd .num{background:var(--red)}
+.branch-div{display:flex;align-items:center;gap:10px;padding:6px 20px;background:#f9fafb;border-top:1px dashed #d0d5dd}
+.branch-div .tag{font-size:12px;font-weight:600;padding:3px 14px;border-radius:12px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.branch-div .tag i{font-size:11px}
+.branch-div .tag.yes{background:var(--green-light);color:var(--green)}
+.branch-div .tag.no{background:var(--red-light);color:var(--red)}
+.branch-div .line{flex:1;height:1px;background:#e5e7eb}
+.legend{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px;padding:14px;background:var(--white);border-radius:10px;border:1px solid #e5e7eb}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-sub)}
+.legend-dot{width:14px;height:14px;border-radius:3px;border:2px solid}
+.legend-dot.admin{border-color:var(--blue);background:var(--blue-light)}
+.legend-dot.sys{border-color:var(--green);background:var(--green-light)}
+.legend-dot.usr{border-color:var(--orange);background:var(--orange-light)}
+.note{background:var(--orange-light);border:1px solid rgba(242,145,0,.25);border-radius:8px;padding:10px 16px;font-size:12px;color:#b36b00;text-align:center;margin-top:14px}
+.note i{margin-right:4px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1><i class="fa-solid fa-diagram-project"></i> 培训计划管理流程</h1>
+    <p>管理员发布培训计划的全生命周期：从新建到归档结束</p>
+  </div>
+  <div class="swimlane">
+    <div class="swim-header">
+      <div class="hd"><i class="fa-solid fa-user-shield"></i> 管理员</div>
+      <div class="hd"><i class="fa-solid fa-server"></i> 系统</div>
+    </div>
+    <div class="swim-body">
+      <!-- 开始 -->
+      <div class="sr step-row"><div class="c"><div class="nd start"><i class="fa-solid fa-play"></i> 开始</div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 1 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">1</span>新建培训计划<div class="dt">填写名称、类型（必修/选修）<br>方式（线上/线下/混合）</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 2 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">2</span>填写培训信息<div class="dt">时间、地点、讲师、学分<br>培训内容与附件</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 3 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">3</span>选择培训对象<div class="dt">弹窗按学院/角色筛选<br>勾选参训人员</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 4 决策 -->
+      <div class="sr step-row"><div class="c"><div class="nd decision"><span class="num" style="background:var(--orange)">4</span>选择操作<div class="dt">发布 or 存草稿？</div></div></div><div class="c"></div></div>
+
+      <!-- 分支A: 发布 -->
+      <div class="branch-div"><span class="tag yes"><i class="fa-solid fa-check"></i> 发布计划</span><div class="line"></div></div>
+      <div class="sr conn branch-yes"><div class="c pv-t ph-r"></div><div class="c ph-l pv-b"><span class="arrow-down"></span></div></div>
+      <div class="sr step-row branch-yes"><div class="c"></div><div class="c"><div class="nd sys"><span class="num">5</span>计划发布成功<div class="dt">状态变为「报名中」</div></div></div></div>
+      <div class="sr conn branch-yes"><div class="c"></div><div class="c pv-f"><span class="arrow-down"></span></div></div>
+      <div class="sr step-row branch-yes"><div class="c"></div><div class="c"><div class="nd sys"><span class="num">6</span>按类型处理<div class="dt">必修 → 指定人员自动参训<br>选修 → 开放自由报名</div></div></div></div>
+
+      <!-- 分支B: 存草稿 -->
+      <div class="branch-div"><span class="tag no"><i class="fa-solid fa-file-pen"></i> 存为草稿</span><div class="line"></div></div>
+      <div class="sr conn branch-no"><div class="c pv-t ph-r"></div><div class="c ph-l pv-b"><span class="arrow-down"></span></div></div>
+      <div class="sr step-row branch-no"><div class="c"></div><div class="c"><div class="nd" style="border-color:var(--gray)"><span class="num" style="background:var(--gray)">5</span>保存为草稿<div class="dt">可随时编辑和发布</div></div></div></div>
+
+      <!-- 主流程继续 -->
+      <div class="branch-div"><span class="tag" style="background:var(--blue-light);color:var(--blue)"><i class="fa-solid fa-arrow-right"></i> 主流程继续（发布后）</span><div class="line"></div></div>
+      <div class="sr conn"><div class="c pv-b"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 7 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">7</span>培训进行中<div class="dt">参训人员签到签退<br>参加培训活动</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 8 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">8</span>培训结束 · 学分赋分<div class="dt">逐人或批量赋予学分</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 9 -->
+      <div class="sr step-row"><div class="c"><div class="nd"><span class="num">9</span>导出数据 · 归档<div class="dt">导出参训数据和名单</div></div></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 结束 -->
+      <div class="sr step-row"><div class="c"><div class="nd end"><i class="fa-solid fa-flag-checkered"></i> 计划结束</div></div><div class="c"></div></div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot admin"></div>管理员操作</div>
+    <div class="legend-item"><div class="legend-dot sys"></div>系统自动</div>
+  </div>
+</div>
+</body>
+</html>

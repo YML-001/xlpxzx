@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>选修培训参训流程（系统内发布）</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#3087CC;--blue-light:#E8F2FA;--blue-dark:#1A5F9E;--green:#1BB975;--green-light:#E8FCF4;--orange:#F29100;--orange-light:#FFF5E5;--red:#DF2027;--red-light:#FCE8EA;--gray:#9096A2;--gray-light:#F1F2F3;--text:#1D2129;--text-sub:#4E5969;--bg:#F7F8FA;--white:#fff;--line:#3087CC;--line-w:2px}
+body{font-family:'OPPOSans','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);padding:40px 20px}
+.page{max-width:1100px;margin:0 auto}
+.page-header{text-align:center;margin-bottom:28px}
+.page-header h1{font-size:24px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.page-header p{font-size:14px;color:var(--text-sub)}
+.swimlane{border:1px solid #d0d5dd;border-radius:12px;overflow:hidden;background:var(--white)}
+.swim-header{display:flex;background:linear-gradient(135deg,#3087CC,#1A5F9E)}
+.swim-header .hd{flex:1;text-align:center;padding:14px 8px;color:#fff;font-size:14px;font-weight:600;border-right:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;gap:6px}
+.swim-header .hd:last-child{border-right:none}
+.swim-header .hd i{font-size:13px;opacity:.85}
+.sr{display:flex;position:relative}
+.sr .c{flex:1;display:flex;justify-content:center;align-items:center;padding:14px 8px;min-height:68px;border-right:1px dashed #e5e7eb;position:relative}
+.sr .c:last-child{border-right:none}
+.sr.step-row:nth-child(4n+3){background:rgba(48,135,204,.015)}
+.nd{background:var(--white);border:2px solid var(--blue);border-radius:8px;padding:10px 14px;text-align:center;font-size:13px;font-weight:600;min-width:120px;max-width:210px;box-shadow:0 1px 6px rgba(0,0,0,.06);position:relative;z-index:2}
+.nd .dt{font-size:11px;font-weight:400;color:var(--text-sub);margin-top:3px;line-height:1.45}
+.nd.start{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;border:none;border-radius:20px;padding:8px 28px;min-width:auto}
+.nd.end{background:var(--gray-light);color:var(--gray);border:2px dashed var(--gray);border-radius:20px;padding:8px 28px;min-width:auto}
+.nd.sys{border-color:var(--green)}
+.nd.usr{border-color:var(--orange)}
+.nd.decision{border-color:var(--orange);background:var(--orange-light)}
+.nd .num{position:absolute;top:-9px;left:-9px;width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:3}
+.nd.sys .num{background:var(--green)}
+.nd.usr .num{background:var(--orange)}
+.sr.conn .c{min-height:36px;padding:0}
+.pv-t::before{content:'';position:absolute;left:50%;top:0;height:50%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.pv-b::before{content:'';position:absolute;left:50%;top:50%;height:50%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.pv-f::before{content:'';position:absolute;left:50%;top:0;height:100%;width:var(--line-w);background:var(--line);transform:translateX(-50%);z-index:1}
+.ph-l::after{content:'';position:absolute;top:50%;left:0;width:50%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.ph-r::after{content:'';position:absolute;top:50%;left:50%;width:50%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.ph-f::after{content:'';position:absolute;top:50%;left:0;width:100%;height:var(--line-w);background:var(--line);transform:translateY(-50%);z-index:1}
+.arrow-down{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--line);z-index:2}
+.branch-yes{--line:var(--green)}.branch-yes .nd{border-color:var(--green)}.branch-yes .nd .num{background:var(--green)}
+.branch-no{--line:var(--red)}.branch-no .nd{border-color:var(--red)}.branch-no .nd .num{background:var(--red)}
+.branch-div{display:flex;align-items:center;gap:10px;padding:6px 20px;background:#f9fafb;border-top:1px dashed #d0d5dd}
+.branch-div .tag{font-size:12px;font-weight:600;padding:3px 14px;border-radius:12px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.branch-div .tag i{font-size:11px}
+.branch-div .tag.yes{background:var(--green-light);color:var(--green)}
+.branch-div .tag.no{background:var(--red-light);color:var(--red)}
+.branch-div .line{flex:1;height:1px;background:#e5e7eb}
+.legend{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px;padding:14px;background:var(--white);border-radius:10px;border:1px solid #e5e7eb}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-sub)}
+.legend-dot{width:14px;height:14px;border-radius:3px;border:2px solid}
+.legend-dot.admin{border-color:var(--blue);background:var(--blue-light)}
+.legend-dot.sys{border-color:var(--green);background:var(--green-light)}
+.legend-dot.usr{border-color:var(--orange);background:var(--orange-light)}
+.note{background:var(--orange-light);border:1px solid rgba(242,145,0,.25);border-radius:8px;padding:10px 16px;font-size:12px;color:#b36b00;text-align:center;margin-top:14px}
+.note i{margin-right:4px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1><i class="fa-solid fa-book-open"></i> 选修培训参训流程（系统内发布）</h1>
+    <p>参加管理员在系统中发布的选修培训，报名 → 签到签退 → 申报学分</p>
+  </div>
+  <div class="swimlane">
+    <div class="swim-header">
+      <div class="hd"><i class="fa-solid fa-user"></i> 参训人员</div>
+      <div class="hd"><i class="fa-solid fa-server"></i> 系统</div>
+      <div class="hd"><i class="fa-solid fa-user-shield"></i> 管理员</div>
+    </div>
+    <div class="swim-body">
+      <!-- 开始 -->
+      <div class="sr step-row"><div class="c"><div class="nd start"><i class="fa-solid fa-play"></i> 开始</div></div><div class="c"></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div><div class="c"></div></div>
+      <!-- 1 -->
+      <div class="sr step-row"><div class="c"><div class="nd usr"><span class="num">1</span>浏览培训列表<div class="dt">筛选类型「选修」<br>查看可报名的选修培训</div></div></div><div class="c"></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div><div class="c"></div></div>
+      <!-- 2 -->
+      <div class="sr step-row"><div class="c"><div class="nd usr"><span class="num">2</span>查看培训详情<div class="dt">了解时间、地点、学分<br>讲师、内容说明</div></div></div><div class="c"></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div><div class="c"></div></div>
+      <!-- 3 -->
+      <div class="sr step-row"><div class="c"><div class="nd usr"><span class="num">3</span>点击「立即报名」<div class="dt">确认弹窗 → 成功提示</div></div></div><div class="c"></div><div class="c"></div></div>
+      <!-- conn 0→1 -->
+      <div class="sr conn"><div class="c pv-t ph-r"></div><div class="c ph-l pv-b"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 4 系统 -->
+      <div class="sr step-row"><div class="c"></div><div class="c"><div class="nd sys"><span class="num">4</span>报名成功<div class="dt">来源标记「自行报名」</div></div></div><div class="c"></div></div>
+      <!-- conn 1→0 -->
+      <div class="sr conn"><div class="c ph-r pv-b"><span class="arrow-down"></span></div><div class="c pv-t ph-l"></div><div class="c"></div></div>
+      <!-- 5 -->
+      <div class="sr step-row"><div class="c"><div class="nd usr"><span class="num">5</span>签到 → 参加培训 → 签退<div class="dt">通过超链接跳转签到/签退系统</div></div></div><div class="c"></div><div class="c"></div></div>
+      <div class="sr conn"><div class="c pv-f"><span class="arrow-down"></span></div><div class="c"></div><div class="c"></div></div>
+      <!-- 6 -->
+      <div class="sr step-row"><div class="c"><div class="nd usr"><span class="num">6</span>申报学分<div class="dt">系统内选修走统一申报入口<br>上传材料 → 提交</div></div></div><div class="c"></div><div class="c"></div></div>
+      <!-- conn 0→1 -->
+      <div class="sr conn"><div class="c pv-t ph-r"></div><div class="c ph-l pv-b"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <!-- 7 系统 -->
+      <div class="sr step-row"><div class="c"></div><div class="c"><div class="nd sys"><span class="num">7</span>等待管理员审核</div></div><div class="c"></div></div>
+      <!-- conn 1→2 -->
+      <div class="sr conn"><div class="c"></div><div class="c pv-t ph-r"></div><div class="c ph-l pv-b"><span class="arrow-down"></span></div></div>
+      <!-- 8 决策 -->
+      <div class="sr step-row"><div class="c"></div><div class="c"></div><div class="c"><div class="nd decision"><span class="num" style="background:var(--orange)">8</span>审核决策</div></div></div>
+
+      <!-- 通过 -->
+      <div class="branch-div"><span class="tag yes"><i class="fa-solid fa-check"></i> 审核通过</span><div class="line"></div></div>
+      <div class="sr conn branch-yes"><div class="c"></div><div class="c"></div><div class="c pv-f"><span class="arrow-down"></span></div></div>
+      <div class="sr step-row branch-yes"><div class="c"></div><div class="c"></div><div class="c"><div class="nd"><span class="num">9</span>弹窗赋分 → 确认</div></div></div>
+      <div class="sr conn branch-yes"><div class="c"></div><div class="c ph-r pv-b"><span class="arrow-down"></span></div><div class="c pv-t ph-l"></div></div>
+      <div class="sr step-row branch-yes"><div class="c"></div><div class="c"><div class="nd sys"><span class="num">10</span>选修学分入账</div></div><div class="c"></div></div>
+
+      <!-- 驳回 -->
+      <div class="branch-div"><span class="tag no"><i class="fa-solid fa-xmark"></i> 审核驳回</span><div class="line"></div></div>
+      <div class="sr conn branch-no"><div class="c"></div><div class="c"></div><div class="c pv-f"><span class="arrow-down"></span></div></div>
+      <div class="sr step-row branch-no"><div class="c"></div><div class="c"></div><div class="c"><div class="nd"><span class="num">9</span>弹窗填写驳回理由</div></div></div>
+      <div class="sr conn branch-no"><div class="c ph-r pv-b"><span class="arrow-down"></span></div><div class="c ph-f"></div><div class="c pv-t ph-l"></div></div>
+      <div class="sr step-row branch-no"><div class="c"><div class="nd usr"><span class="num">10</span>查看理由 · 重新申报</div></div><div class="c"></div><div class="c"></div></div>
+
+      <!-- 结束 -->
+      <div class="branch-div"><span class="tag" style="background:var(--gray-light);color:var(--gray)"><i class="fa-solid fa-arrows-to-dot"></i> 流程汇合</span><div class="line"></div></div>
+      <div class="sr conn"><div class="c"></div><div class="c pv-b"><span class="arrow-down"></span></div><div class="c"></div></div>
+      <div class="sr step-row"><div class="c"></div><div class="c"><div class="nd end"><i class="fa-solid fa-flag-checkered"></i> 结束</div></div><div class="c"></div></div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot usr"></div>参训人员操作</div>
+    <div class="legend-item"><div class="legend-dot sys"></div>系统自动</div>
+    <div class="legend-item"><div class="legend-dot admin"></div>管理员操作</div>
+  </div>
+</div>
+</body>
+</html>
